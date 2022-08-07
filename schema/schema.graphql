@@ -1,0 +1,85 @@
+type Query {
+  hello: String!
+
+  users: [User!]!
+  user(id: ID!): User
+}
+
+type LoginData {
+  token: String!
+  user: User
+}
+
+type Mutation {
+  createUser(input: createUserInput!): User
+  followUnfollowUser(userId: String!): User
+  login(email: String!, password: String!): LoginData
+
+  createPost(input: createPostInput!): Post
+  likeUnlikePost(postId: String!): Post
+  commentOnPost(postId: String!, comment: String!): Post
+}
+
+type User {
+  id: ID!
+  name: String!
+  profilePic: String!
+  email: String!
+  isAdmin: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  posts(first: Int, page: Int, after: String): PostConnection
+  followers: [User!]
+  followings: [User!]
+  isAFollower: Boolean
+  alreadyFollowing: Boolean
+}
+
+type PostEdge {
+  cursor: String!
+  node: Post!
+}
+
+type PageInfo {
+  endCursor: String
+  startCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type Comment {
+  id: ID!
+  name: String!
+  profilePic: String!
+  comment: String!
+  date: String!
+}
+
+type Post {
+  id: ID!
+  user: User!
+  caption: String!
+  image: String!
+  createdAt: String!
+  updatedAt: String!
+  comments: [Comment!]
+  likes: [User!]
+}
+
+input createUserInput {
+  name: String!
+  email: String!
+  profilePic: String!
+  password: String!
+}
+
+input createPostInput {
+  caption: String!
+  image: String!
+}
